@@ -19,7 +19,7 @@ try{
         $city = htmlCharConvert($_POST["city"]);
         $state = htmlCharConvert($_POST["state"]);
         $zip = htmlCharConvert($_POST["zip"]);
-        $phone = htmlCharConvert($_POST["phone"]);
+        $phone = str_replace(['(', ')', ' ', '-'], "", htmlCharConvert($_POST["phone"]));
         $gender = htmlCharConvert($_POST["gender"]);
         $day = htmlCharConvert($_POST["day"]);
         $month = htmlCharConvert($_POST["month"]);
