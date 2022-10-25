@@ -49,7 +49,7 @@ try{
 
         // Check IF transactionID EXIST in database
         $query_transaction_id = $conne->query("SELECT transaction_id FROM contacts WHERE transaction_id = '$transactionID' LIMIT 1");
-        if ( $query_transaction_id->num_rows > 0 && $transactionID !== "notransID" ) {
+        if ( $query_transaction_id->num_rows > 0 && $transactionID !== 0 ) {
             $response['message'] = 'Transaction already exists';
             echo json_encode($response);
             exit();
