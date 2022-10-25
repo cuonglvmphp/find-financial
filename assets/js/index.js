@@ -57,7 +57,6 @@ function submitDataUser (form) {
         success :  function(resp)
         {
             $('#cover-spin').css('display', 'none')
-
             let response = JSON.parse(resp)
             if (response.message === 'success') {
                 setCookieUser(convertFormToJSON($('#form2')))

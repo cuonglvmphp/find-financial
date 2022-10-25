@@ -2,6 +2,29 @@
 ini_set('display_errors',0);
 header('Content-type: application/json');
 include('config.php');
+
+function gen_uuid() {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        // 32 bits for "time_low"
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+
+        // 16 bits for "time_mid"
+        mt_rand( 0, 0xffff ),
+
+        // 16 bits for "time_hi_and_version",
+        // four most significant bits holds version number 4
+        mt_rand( 0, 0x0fff ) | 0x4000,
+
+        // 16 bits, 8 bits for "clk_seq_hi_res",
+        // 8 bits for "clk_seq_low",
+        // two most significant bits holds zero and one for variant DCE1.1
+        mt_rand( 0, 0x3fff ) | 0x8000,
+
+        // 48 bits for "node"
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+}
+
 function htmlCharConvert($data) {
         $data = trim($data);
         $data = stripslashes($data);
@@ -49,7 +72,7 @@ try{
 
         // Check IF transactionID EXIST in database
         $query_transaction_id = $conne->query("SELECT transaction_id FROM contacts WHERE transaction_id = '$transactionID' LIMIT 1");
-        if ( $query_transaction_id->num_rows > 0 && $transactionID !== 0 ) {
+        if ( $query_transaction_id->num_rows > 0 && $transactionID != 0 ) {
             $response['message'] = 'Transaction already exists';
             echo json_encode($response);
             exit();
@@ -57,7 +80,7 @@ try{
 
         // Check IF mail EXIST in DB
         $query_email = $conne->query("SELECT mail FROM contacts WHERE mail = '$email' LIMIT 1");
-        if ( $query_email->num_rows > 20 ) {
+        if ( $query_email->num_rows > 0 ) {
             $response['message'] = 'Email already exists';
             echo json_encode($response);
             exit();
@@ -65,24 +88,8 @@ try{
 
         // check IF phone number EXIST in DB
         $query_phone = $conne->query("SELECT phone FROM contacts WHERE phone = '$phone' LIMIT 1");
-        if ( $query_phone->num_rows > 20 ) {
+        if ( $query_phone->num_rows > 0 ) {
             $response['message'] = 'Phone already exists';
-            echo json_encode($response);
-            exit();
-        }
-
-        // check IF mail is in "trashmail" table
-        $badmail = $conne->query("SELECT mail FROM trashmail WHERE mail = '$email' LIMIT 1");
-        if ( $badmail->num_rows > 0 ) {
-            $response['message'] = 'Email does not exist';
-            echo json_encode($response);
-            exit();
-        }
-                
-        // check IF phonenumber is in "phonebad" table
-        $invalidphone = $conne->query("SELECT phone FROM phonebad WHERE phone = '$phone' LIMIT 1");
-        if ( $invalidphone->num_rows > 0 ) {
-            $response['message'] = 'Phone does not exist';
             echo json_encode($response);
             exit();
         }
@@ -93,7 +100,7 @@ try{
         $increment = $conne->query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'lifegewe_leads' AND TABLE_NAME = 'contacts'");
         $row = $increment->fetch_assoc();
 
-        $uid = "u01010101{$row["AUTO_INCREMENT"]}";
+        $uid = gen_uuid();
         // Prepare and bind sql querry
         $stmt = $conne->prepare("INSERT INTO contacts (cid, 
         uid,
