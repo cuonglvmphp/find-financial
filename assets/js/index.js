@@ -57,14 +57,13 @@ function submitDataUser (form) {
         success :  function(resp)
         {
             $('#cover-spin').css('display', 'none')
-            let response = JSON.parse(resp)
-            if (response.message === 'success') {
+            if (resp.message === 'success') {
                 setCookieUser(convertFormToJSON($('#form2')))
                 $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
                     $("#success-alert").slideUp(500);
                 });
             } else {
-                $('#server_error').text(response.message)
+                $('#server_error').text(resp.message)
             }
         },
         error: function(jqXHR, textStatus, error){
