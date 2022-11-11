@@ -71,6 +71,7 @@
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  width: 100vw;
 }
 .wrapper::after {
   content: "";
@@ -138,14 +139,14 @@ footer p {
 
 .border-gradient {
   flex: 1;
-  height: 15px;
-  background: linear-gradient(to right, #017AEA 0%, #fff  100%);
+  align-self: center;
+  height: 20px;
 }
 
-.border-gradient-left {
-  flex: 1;
-  height: 15px;
-  background: linear-gradient(to left, #017AEA 0%, #fff  100%);
+.border-gradient img {
+  object-fit: cover;
+  height: 20px;
+  width: 100%;
 }
 
 .form-control {
@@ -155,6 +156,19 @@ footer p {
   font-size: 1.8rem;
   box-shadow: 0 4px 11px 0px rgb(1 122 233 / 10%);
   background-color: #fff !important;
+}
+
+.select-custom {
+  background: transparent;
+  background-image: url('/assets/images/arrow.svg');
+  background-repeat: no-repeat;
+  background-position-x: 97%;
+  background-position-y: 9px;
+  border: 1px solid #dfdfdf;
+  margin-right: 2rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none !important;
 }
 
 .form-control:disabled, .form-control:read-only {
