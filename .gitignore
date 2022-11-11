@@ -1,4 +1,5 @@
 .DS_Store
 /.idea
 /docker
+/db_data
 docker-compose.yml

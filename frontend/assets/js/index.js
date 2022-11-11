@@ -51,7 +51,7 @@ function submitDataUser (form) {
    $('#cover-spin').css('display', 'block')
     var data = $('#form2').serialize();
     $.ajax({
-        url: '../signup/process.php',
+        url: '../services/InsertDataLead.php',
         data: data,
         type: 'POST',
         success :  function(resp)
